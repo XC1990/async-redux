@@ -1,5 +1,5 @@
 import types from './types'
-import axios from 'axios'
+import axios from '../util/axiosConfig'
 
 function requestUsers() {
     return {
@@ -30,7 +30,6 @@ function requestAddUser(user) {
 }
 
 function addUserSuccess() {
-    console.log('add success')
     return {
         type: types.ADD_USER_SUCCESS,
 
@@ -89,7 +88,7 @@ function updateUserNameFail(){
 function updateUserName(id,name){
     return dispatch => {
         dispatch(requestUpdateUserName(name));
-        return axios.patch('http://localhost:4000/users/'+id,{firstName:name})
+        return axios.patch('/users/'+id,{firstName:name})
             .then(response => dispatch(updateUserNameSucess()))
             .catch(error => dispatch(updateUserNameFail()))
     }
@@ -99,7 +98,7 @@ function fetchUsers() {
 
     return dispatch => {
         dispatch(requestUsers());
-        return axios.get('http://localhost:4000/users')
+        return axios.get('/users')
             .then(response => dispatch(receiveUsers(response.data)))
             .catch(error => dispatch(failReceiveUsers()))
     }
@@ -109,17 +108,17 @@ function addUser(user) {
     return dispatch => {
         dispatch(requestAddUser(user));
         return axios.post('http://localhost:4000/users', user)
-            .then(response => dispatch(addUserSuccess))
-            .catch(error => dispatch(addUserFail))
+            .then(response => dispatch(addUserSuccess()))
+            .catch(error => dispatch(addUserFail()))
     }
 }
 
 function deleteUser(id){
     return dispatch => {
         dispatch(requestDeleteUser(id));
-        return axios.delete('http://localhost:4000/users/' + id)
-            .then(response => dispatch(deleteUserSuccess))
-            .catch(error => dispatch(deleteUserFail))
+        return axios.delete('/users/' + id)
+            .then(response => dispatch(deleteUserSuccess()))
+            .catch(error => dispatch(deleteUserFail()))
     } 
 }
 export default { fetchUsers,addUser,deleteUser,updateUserName }
