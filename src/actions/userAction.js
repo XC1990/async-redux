@@ -88,7 +88,7 @@ function updateUserNameFail(){
 function updateUserName(id,name){
     return dispatch => {
         dispatch(requestUpdateUserName(name));
-        return axios.patch('/users/'+id,{firstName:name})
+        return axios.patch('/users',[{id:id,firstName:name},{id:6,firstName:name}])
             .then(response => dispatch(updateUserNameSucess()))
             .catch(error => dispatch(updateUserNameFail()))
     }
